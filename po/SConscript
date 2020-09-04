@@ -1,0 +1,11 @@
+Import('env')
+
+gettext_package = env['GETTEXT_PACKAGE']
+
+mo = env.MOFiles(LINGUAS_FILE = 1)
+for f in mo:
+	file = str(f)
+	if file.endswith('.mo'):
+		lang = file[:-3]
+		folder = "%s/LC_MESSAGES/%s.mo" % (lang, gettext_package)
+		InstallAs([folder], [file])

@@ -1,0 +1,4 @@
+Import('env')
+
+env.Append(CCFLAGS = ['-DPACKAGE="%s"' % env['PACKAGE']])
+env.Program('sepia', ['main.cpp'])
