@@ -1,5 +1,5 @@
 /**********************************************************************
- * main.cpp
+ * sepia_appwindow.cpp
  *
  * Copyright © 2020 Rodolfo Ribeiro Gomes
  *
@@ -19,27 +19,30 @@
  * along with Sepia.  If not, see <https://www.gnu.org/licenses/>.
 **********************************************************************/
 
-#include <gtkmm.h>
+#include "sepia_appwindow.h"
 
-#include <libintl.h>
+SepiaAppWindow* SepiaAppWindow::create()
+{
+	auto refBuilder = Gtk::Builder::create_from_resource("/br/eng/rodolfo/sepia/appwindow.ui");
 
-#include "sepia_application.h"
+	SepiaAppWindow* window = nullptr;
+	refBuilder->get_widget_derived("app_window", window);
+	if (!window)
+		throw std::runtime_error("No \"app_window\" object in appwindow.ui");
 
-#define _(x) gettext(x)
+	return window;
+}
 
-#define STRINGIFY(x) #x
-#define TO_STRING(x) STRINGIFY(x)
-#define PACKAGE_NAME TO_STRING(PACKAGE)
-
-int main(int argc, char *argv[])
+void SepiaAppWindow::open_file_view(const Glib::RefPtr<Gio::File>& /*file*/)
 {
 
-	const char * gettext_package = PACKAGE_NAME;
-	bindtextdomain(gettext_package, "locale");
-	bind_textdomain_codeset(gettext_package, "UTF-8");
-	textdomain(gettext_package);
-
-	auto app = SepiaApplication::create();
-
-	return app->run(argc, argv);
 }
+
+SepiaAppWindow::SepiaAppWindow(BaseObjectType* cobject,
+							   const Glib::RefPtr<Gtk::Builder>& refBuilder)
+	: Gtk::ApplicationWindow(cobject),
+	  m_refBuilder(refBuilder)
+{
+
+}
+

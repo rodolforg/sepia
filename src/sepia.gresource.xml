@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/br/eng/rodolfo/sepia">
+    <file preprocess="xml-stripblanks" alias="appwindow.ui">src/ui/appwindow.ui</file>
+  </gresource>
+</gresources>

@@ -1,5 +1,5 @@
 /**********************************************************************
- * main.cpp
+ * sepia_application.h
  *
  * Copyright © 2020 Rodolfo Ribeiro Gomes
  *
@@ -19,27 +19,28 @@
  * along with Sepia.  If not, see <https://www.gnu.org/licenses/>.
 **********************************************************************/
 
+#ifndef SEPIA_APPLICATION_H
+#define SEPIA_APPLICATION_H
+
 #include <gtkmm.h>
 
-#include <libintl.h>
+class SepiaAppWindow;
 
-#include "sepia_application.h"
-
-#define _(x) gettext(x)
-
-#define STRINGIFY(x) #x
-#define TO_STRING(x) STRINGIFY(x)
-#define PACKAGE_NAME TO_STRING(PACKAGE)
-
-int main(int argc, char *argv[])
+class SepiaApplication : public Gtk::Application
 {
+public:
+	static Glib::RefPtr<SepiaApplication> create();
 
-	const char * gettext_package = PACKAGE_NAME;
-	bindtextdomain(gettext_package, "locale");
-	bind_textdomain_codeset(gettext_package, "UTF-8");
-	textdomain(gettext_package);
+protected:
+	SepiaApplication();
 
-	auto app = SepiaApplication::create();
+	void on_activate() override;
+	void on_open(const Gio::Application::type_vec_files& files,
+				 const Glib::ustring& hint) override;
 
-	return app->run(argc, argv);
-}
+private:
+	SepiaAppWindow* create_appwindow();
+	void on_hide_window(Gtk::Window* window);
+};
+
+#endif // SEPIA_APPLICATION_H

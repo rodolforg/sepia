@@ -1,4 +1,18 @@
 Import('env')
 
 env.Append(CCFLAGS = ['-DPACKAGE="%s"' % env['PACKAGE']])
-env.Program('sepia', ['main.cpp'])
+
+gresource_bld = Builder(action = 'glib-compile-resources --target=$TARGET --generate-source $SOURCE',
+	suffix = '.c',
+	src_suffix = '.gresource.xml')
+env.Append(BUILDERS = {'GResource' : gresource_bld})
+
+
+env.GResource('sepia.gresource.xml')
+
+src_files = Split("""main.cpp
+                     sepia_application.cpp
+                     sepia_appwindow.cpp
+					 sepia.c
+                  """)
+env.Program('sepia', src_files)
